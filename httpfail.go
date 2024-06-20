@@ -6,24 +6,20 @@ import (
 )
 
 type Reason struct {
-	message string
-	code    int
+	Message string
+	Code    int
 }
 
 func NewReason(message string, code int) *Reason {
 	return &Reason{
-		message: message,
-		code:    code,
+		Message: message,
+		Code:    code,
 	}
 }
 
 type Failure struct {
 	err    error
-	reason *Reason
-}
-
-func (f *Failure) Reason() *Reason {
-	return f.reason
+	Reason *Reason
 }
 
 func (f *Failure) Error() string {
@@ -39,12 +35,12 @@ func (f *Failure) Is(err error) bool {
 }
 
 func (f *Failure) Write(w http.ResponseWriter) {
-	http.Error(w, f.reason.message, f.reason.code)
+	http.Error(w, f.Reason.Message, f.Reason.Code)
 }
 
 func New(err error, reason *Reason) *Failure {
 	return &Failure{
 		err:    err,
-		reason: reason,
+		Reason: reason,
 	}
 }
